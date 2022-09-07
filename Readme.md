@@ -1,7 +1,7 @@
 # Личный проект «Что посмотреть»
 
 * Студент: [Арсений Кудрявцев](https://up.htmlacademy.ru/nodejs-api/2/user/499817).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий (sench) Железцов](https://htmlacademy.ru/profile/sench).
 
 ---
 
