@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import { Film } from '../../types/film.type.js';
+import { User } from '../../types/user.type.js';
 import { FileReaderInterface } from './file-reader.interface.js';
 
 export default class TSVFileReader implements FileReaderInterface {
@@ -11,6 +12,24 @@ export default class TSVFileReader implements FileReaderInterface {
     this.rawData = readFileSync(this.filename, { encoding: 'utf8' });
   }
 
+  private convertUserInfo(user: string): User {
+    const userInfo = user.split(' ');
+    const result: User = {
+      name: '',
+      email: '',
+      avatarPath: '',
+      password: '',
+    };
+    for (let i = 0; i < userInfo.length; i++) {
+      result.name = userInfo[0];
+      result.email = userInfo[1];
+      result.avatarPath = userInfo[2];
+      result.password = userInfo[3];
+    }
+    console.log(result);
+    return result;
+  }
+
   public toArray(): Film[] {
     if (!this.rawData) {
       return [];
@@ -20,7 +39,7 @@ export default class TSVFileReader implements FileReaderInterface {
       .split('\n')
       .filter((row) => row.trim() !== '')
       .map((line) => line.split('\t'))
-      .map(([name, description, createdDate, genre, releaseDate, rating, videoPreviewSrc, videoSrc, actors, director, duration, commentsCount, userName, email, avatarPath, password, posterSrc, backgroundImgSrc, backgroundColor]) => ({
+      .map(([name, description, createdDate, genre, releaseDate, rating, videoPreviewSrc, videoSrc, actors, director, duration, commentsCount, user, posterSrc, backgroundImgSrc, backgroundColor]) => ({
         name,
         description,
         postDate: new Date(createdDate),
@@ -29,12 +48,12 @@ export default class TSVFileReader implements FileReaderInterface {
         rating: Number.parseInt(rating, 10),
         videoPreviewSrc,
         videoSrc,
-        actors: actors.split(' ')
+        actors: actors.split(', ')
           .map((actorName) => actorName),
         director,
         duration: Number.parseInt(duration, 10),
         commentsCount: Number.parseInt(commentsCount, 10),
-        user: { name: userName, email, avatarPath, password },
+        user: this.convertUserInfo(user),
         posterSrc,
         backgroundImgSrc,
         backgroundColor,
