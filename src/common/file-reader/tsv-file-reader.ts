@@ -26,7 +26,6 @@ export default class TSVFileReader implements FileReaderInterface {
       result.avatarPath = userInfo[2];
       result.password = userInfo[3];
     }
-    console.log(result);
     return result;
   }
 
